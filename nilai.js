@@ -10,38 +10,72 @@
 // =============================================================
 
 function hitungNilaiAkhir(tugas, uts, uas) {
-  // TODO: salin dari Lab 1
-  return 0;
+const nilai = (tugas * 0.3) + (uts * 0.3) + (uas * 0.4);
+  return Math.round(nilai * 10) / 10;
 }
 
 function tentukanGrade(nilai) {
-  // TODO: salin dari Lab 1
-  return '?';
+  if (nilai >= 85) return 'A';
+  if (nilai >= 70) return 'B';
+  if (nilai >= 55) return 'C';
+  if (nilai >= 40) return 'D';
+  return 'E';
 }
 
 function buatRekap(daftar) {
-  // TODO: salin dari Lab 1 (map + spread, tambah nilaiAkhir, grade, lulus)
-  return daftar;
+  return daftar.map(mahasiswa => {
+    const nilaiAkhir = hitungNilaiAkhir(
+      mahasiswa.tugas,
+      mahasiswa.uts,
+      mahasiswa.uas
+    );
+
+    return {
+      ...mahasiswa,
+      nilaiAkhir: nilaiAkhir,
+      grade: tentukanGrade(nilaiAkhir),
+      lulus: nilaiAkhir >= 55
+    };
+  });
 }
 
 function hitungRataRata(rekap) {
-  // TODO: salin dari Lab 1
-  return 0;
+   if (rekap.length === 0) return 0;
+
+  const total = rekap.reduce(
+    (jumlah, mahasiswa) => jumlah + mahasiswa.nilaiAkhir,
+    0
+  );
+
+  return Math.round((total / rekap.length) * 10) / 10;
 }
 
 function cariTertinggi(rekap) {
-  // TODO: salin dari Lab 1. Tambahkan: jika rekap kosong -> return null
-  return null;
+   if (rekap.length === 0) return null;
+
+  return rekap.reduce((tertinggi, mahasiswa) =>
+    mahasiswa.nilaiAkhir > tertinggi.nilaiAkhir
+      ? mahasiswa
+      : tertinggi
+  );
 }
 
 function hitungDistribusiGrade(rekap) {
-  // TODO: salin dari Lab 1
-  return { A: 0, B: 0, C: 0, D: 0, E: 0 };
+ const distribusi = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+
+  rekap.forEach(mahasiswa => {
+    distribusi[mahasiswa.grade]++;
+  });
+
+  return distribusi;
 }
 
 function cariMahasiswa(rekap, kataKunci) {
-  // TODO: salin dari Lab 1
-  return rekap;
+  const keyword = kataKunci.trim().toLowerCase();
+
+  return rekap.filter(mahasiswa =>
+    mahasiswa.nama.toLowerCase().includes(keyword)
+  );
 }
 
 // ---- Sudah jadi: validasi input mahasiswa baru (dipakai sebelum memanggil api.js) ----
